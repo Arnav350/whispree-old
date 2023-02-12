@@ -15,6 +15,7 @@
 button,
 input {
   border: none;
+  background-color: transparent;
 }
 
 button:hover,
@@ -28,15 +29,15 @@ input:focus {
   outline-color: transparent;
 }
 
-/* signup */
+/* sign */
 
-.signup {
+.sign__container {
   position: relative;
   height: 100vh;
   background-color: var(--color-light);
 }
 
-.signup__box {
+.sign {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -44,7 +45,6 @@ input:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 440px;
   width: 360px;
   padding: 16px;
   background-color: #f8f8f8;
@@ -52,24 +52,24 @@ input:focus {
   /* box-shadow: 0 0 2px 2px #00000022; */
 }
 
-.signup__title {
+.sign__title {
   padding: 4px;
   color: #665580;
   font-size: 48px;
 }
 
-.signup__logo {
+.sign__logo {
   padding: 4px;
   font-size: 20px;
 }
 
-.signup__form {
+.sign__form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.signup__input {
+.sign__input {
   margin: 8px;
   padding: 8px;
   width: 240px;
@@ -79,15 +79,15 @@ input:focus {
   font-size: 16px;
 }
 
-.signup__input:hover {
+.sign__input:hover {
   border-bottom-color: var(--color-light);
 }
 
-.signup__input:focus {
+.sign__input:focus {
   border-bottom-color: var(--color-dark);
 }
 
-.signup__submit {
+.sign__submit {
   margin: 8px;
   padding: 8px;
   width: 240px;
@@ -97,17 +97,142 @@ input:focus {
   font-weight: 500;
 }
 
-.signup__para {
+.sign__para {
   padding: 8px;
   font-size: 12px;
   color: #888888;
 }
 
-.signup__signin {
+.sign__signin {
   text-decoration: none;
   color: #888888;
 }
 
-.signup__signin:hover {
+.sign__signin:hover {
   text-decoration: underline;
+}
+
+/* home */
+
+.home__container {
+  position: relative;
+  height: 100vh;
+  background-color: var(--color-light);
+}
+
+.home {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: flex;
+  height: 80%;
+  width: 65%;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* sidebar */
+
+.sidebar {
+  flex: 1;
+  background-color: var(--color-dark);
+}
+
+.sidebar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  height: 72px;
+  background-blend-mode: multiply;
+  background-image: linear-gradient(#aaaaaa, #aaaaaa);
+  background-color: var(--color-dark);
+}
+
+.sidebar__logo {
+  padding: 8px;
+  color: #f8f8f8;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.sidebar__profile {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.sidebar__avatar {
+  margin: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.sidebar__username {
+  padding: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.sidebar__search {
+  padding: 16px;
+  width: 100%;
+  color: #f8f8f8;
+  border-bottom: 0.2px solid #f8f8f844;
+}
+
+.sidebar__search::placeholder {
+  color: #f8f8f8;
+}
+
+/* users */
+
+.user {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.user__avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+}
+
+.user__info {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  color: #f8f8f8;
+}
+
+.user__username {
+  font-size: 18px;
+}
+
+.user__message {
+  font-size: 14px;
+}
+
+/* chat */
+
+.chat {
+  flex: 2;
+}
+
+.chat__info {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  height: 72px;
+  background-blend-mode: multiply;
+  background-image: linear-gradient(#ffffff, #ffffff);
+  background-color: var(--color-dark);
+}
+
+.chat__username {
+  color: #f8f8f8;
 }
