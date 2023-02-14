@@ -6,7 +6,7 @@ function Chat() {
       <nav className="chat__info">
         <p className="chat__username">Arnav</p>
       </nav>
-      <div></div>
+      <div className="chat__messages"></div>
       <div></div>
     </div>
   );
