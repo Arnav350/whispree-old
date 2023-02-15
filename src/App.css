@@ -66,7 +66,7 @@ input:focus {
 .sign__form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .sign__input {
@@ -87,6 +87,27 @@ input:focus {
   border-bottom-color: var(--color-dark);
 }
 
+.sign__avatar {
+  display: none;
+}
+
+.sign__label {
+  display: flex;
+  align-items: center;
+  color: var(--color-light);
+}
+
+.sign__attach {
+  margin: 8px 8px 8px 16px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+}
+
+.sign__add {
+  font-size: 14px;
+}
+
 .sign__submit {
   margin: 8px;
   padding: 8px;
@@ -103,12 +124,13 @@ input:focus {
   color: #888888;
 }
 
-.sign__signin {
+.sign__signin,
+.sign__signup {
   text-decoration: none;
-  color: #888888;
 }
 
-.sign__signin:hover {
+.sign__signin:hover,
+.sign__signup:hover {
   text-decoration: underline;
 }
 
