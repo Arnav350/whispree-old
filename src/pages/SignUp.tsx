@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -9,6 +9,8 @@ import "../App.css";
 
 function SignUp() {
   const [err, setErr] = useState(false);
+  const navigate = useNavigate();
+
   async function handleSubmit(event: any) {
     event.preventDefault();
 
@@ -24,22 +26,8 @@ function SignUp() {
 
       const uploadTask = uploadBytesResumable(storageRef, avatar);
 
-      // Register three observers:
       uploadTask.on(
         "state_changed",
-        // (snapshot) => {
-        //   const progress =
-        //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //   console.log("Upload is " + progress + "% done");
-        //   switch (snapshot.state) {
-        //     case "paused":
-        //       console.log("Upload is paused");
-        //       break;
-        //     case "running":
-        //       console.log("Upload is running");
-        //       break;
-        //   }
-        // },
         // (error) => {
         // setErr(err);
         // },
@@ -56,6 +44,9 @@ function SignUp() {
               email,
               photoURL: downloadURL,
             });
+
+            await setDoc(doc(db, "userChats", res.user.uid), {});
+            navigate("/");
           });
         }
       );
