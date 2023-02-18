@@ -45,8 +45,8 @@ function SignUp() {
               photoURL: downloadURL,
             });
 
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-            navigate("/");
+            // await setDoc(doc(db, "userChats", res.user.uid), {});
+            // navigate("/");
           });
         }
       );
