@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { RiImageAddFill } from "react-icons/ri";
 import "../App.css";
-import { AuthContext } from "../context/AuthContext";
 
 function SignUp() {
   const [err, setErr] = useState(false);
