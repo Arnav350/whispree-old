@@ -124,14 +124,16 @@ input:focus {
   color: #888888;
 }
 
-.sign__signin,
-.sign__signup {
+.sign__sign {
   text-decoration: none;
 }
 
-.sign__signin:hover,
-.sign__signup:hover {
+.sign__sign:hover {
   text-decoration: underline;
+}
+
+.sign__sign:active {
+  color: var(--color-light);
 }
 
 /* home */
@@ -202,13 +204,16 @@ input:focus {
 }
 
 .sidebar__search {
-  padding: 16px;
-  width: 100%;
-  color: #f8f8f8;
   border-bottom: 0.2px solid #f8f8f844;
 }
 
-.sidebar__search::placeholder {
+.sidebar__input {
+  padding: 16px;
+  width: 100%;
+  color: #f8f8f8;
+}
+
+.sidebar__input::placeholder {
   color: #f8f8f8;
 }
 
@@ -235,6 +240,13 @@ input:focus {
   display: flex;
   align-items: center;
   padding: 8px;
+}
+
+.user:hover {
+  background-blend-mode: overlay;
+  background-image: linear-gradient(#666666, #666666);
+  background-color: var(--color-dark);
+  cursor: pointer;
 }
 
 .user__avatar {

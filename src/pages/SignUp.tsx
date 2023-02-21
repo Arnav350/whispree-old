@@ -17,8 +17,13 @@ function SignUp() {
     const username = event.target[0].value;
     const email = event.target[1].value;
     const password = event.target[2].value;
+    const confirm = event.target[3].value;
     const avatar = event.target[4].files[0];
 
+    if (password !== confirm) {
+      setErr(true);
+      return null;
+    }
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -64,7 +69,7 @@ function SignUp() {
           });
         }
       );
-    } catch (err) {
+    } catch (error) {
       setErr(true);
     }
   }
@@ -97,7 +102,7 @@ function SignUp() {
         </form>
         <p className="sign__para">
           Already have an account?{" "}
-          <Link to="/signin" className="sign__signin">
+          <Link to="/signin" className="sign__sign">
             Sign In
           </Link>
         </p>
