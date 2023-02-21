@@ -406,6 +406,7 @@ input:focus {
 
 .message__image {
   width: 50%;
+  border-radius: 16px;
 }
 
 .my {

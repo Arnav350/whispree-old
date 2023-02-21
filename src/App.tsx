@@ -16,8 +16,6 @@ import "./App.css";
 function App() {
   const currentUser: User | null = UseAuth();
 
-  console.log(currentUser);
-
   return (
     <Router>
       <Routes>
