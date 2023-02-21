@@ -1,24 +1,40 @@
 import React, { useState, useEffect } from "react";
 import Message from "./Message";
 import { db } from "../firebase";
+import { UseAuth } from "../context/AuthContext";
 import { UseUser } from "../context/UserContext";
-import { doc, onSnapshot } from "firebase/firestore";
+import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
 
 function Chat() {
+  const currentUser = UseAuth();
   const { data } = UseUser();
+
+  const [text, setText] = useState("");
+  const [img, setImg] = useState(null);
 
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc: any) => {
-      doc.exists() && setMessages(doc.data());
+      doc.exists() && setMessages(doc.data().messages);
     });
 
     return () => {
       unSub();
     };
   }, [data.chatUid]);
+
+  async function handleSend() {
+    if (img) {
+    } else {
+      await updateDoc(doc(db, "chats", data.chatUid), {
+        messages: arrayUnion({
+          id: "temp",
+        }),
+      });
+    }
+  }
 
   return (
     <div className="chat">
@@ -35,14 +51,22 @@ function Chat() {
           type="text"
           placeholder="Type Something..."
           className="chat__text"
+          onChange={(event: any) => setText(event.target.value)}
         />
         <div className="chat__options">
           <RiAttachment2 className="chat__attach" />
-          <input type="file" id="chat__image" className="chat__image" />
+          <input
+            type="file"
+            id="chat__image"
+            className="chat__image"
+            onChange={(event: any) => setImg(event.target.files[0])}
+          />
           <label htmlFor="chat__image">
             <RiImageAddFill className="chat__attach" />
           </label>
-          <button className="chat__send">Send</button>
+          <button className="chat__send" onClick={handleSend}>
+            Send
+          </button>
         </div>
       </div>
     </div>

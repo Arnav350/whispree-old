@@ -1,6 +1,11 @@
 import React from "react";
+import { UseAuth } from "../context/AuthContext";
+import { UseUser } from "../context/UserContext";
 
 function Message({ message }: any) {
+  const currentUser = UseAuth();
+  const { data } = UseUser();
+
   return (
     <div className="my message">
       <div className="message__info">
