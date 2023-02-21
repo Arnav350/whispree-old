@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { UseAuth } from "../context/AuthContext";
+import { UseUser } from "../context/UserContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { User } from "firebase/auth";
 
 function Users() {
   const currentUser: User | null = UseAuth();
+  const { dispatch } = UseUser();
 
   const [users, setUsers] = useState<any | []>([]);
 
@@ -28,36 +30,31 @@ function Users() {
     currentUser?.uid && getUsers();
   }, [currentUser?.uid]);
 
+  function handleSelect(userInfo: any) {
+    dispatch({ type: "CHANGE_USER", payload: userInfo });
+  }
+
   return (
     <div className="user__container">
-      <div className="user">
-        <img src="" alt="Temp" className="user__avatar" />
-        <div className="user__info">
-          <p className="user__username">Arnav</p>
-          <p className="user__message">Hello there!</p>
+      {Object.entries(users)?.map((chat: any) => (
+        <div
+          className="user"
+          key={chat[0]}
+          onClick={() => handleSelect(chat[1].userInfo)}
+        >
+          <img
+            src={chat[1].userInfo.photoURL}
+            alt="Temp"
+            className="user__avatar"
+          />
+          <div className="user__info">
+            <p className="user__username">{chat[1].userInfo.displayName}</p>
+            <p className="user__message">
+              {chat[1].userInfo.lastMessage?.text}
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="user">
-        <img src="" alt="Temp" className="user__avatar" />
-        <div className="user__info">
-          <p className="user__username">Arnav</p>
-          <p className="user__message">Hello there!</p>
-        </div>
-      </div>
-      <div className="user">
-        <img src="" alt="Temp" className="user__avatar" />
-        <div className="user__info">
-          <p className="user__username">Arnav</p>
-          <p className="user__message">Hello there!</p>
-        </div>
-      </div>
-      <div className="user">
-        <img src="" alt="Temp" className="user__avatar" />
-        <div className="user__info">
-          <p className="user__username">Arnav</p>
-          <p className="user__message">Hello there!</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

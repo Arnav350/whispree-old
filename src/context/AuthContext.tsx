@@ -2,13 +2,13 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import { auth } from "../firebase";
 import { User } from "firebase/auth";
 
-interface IAuthProviderChildren {
+interface IProviderChildren {
   children: React.ReactNode;
 }
 
 export const AuthContext = createContext<User | null>(null);
 
-export function AuthProvider({ children }: IAuthProviderChildren) {
+export function AuthProvider({ children }: IProviderChildren) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {

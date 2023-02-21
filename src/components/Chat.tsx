@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Message from "./Message";
+import { db } from "../firebase";
+import { UseUser } from "../context/UserContext";
+import { doc, onSnapshot } from "firebase/firestore";
 import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
 
 function Chat() {
+  const { data } = UseUser();
+
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc: any) => {
+      doc.exists() && setMessages(doc.data());
+    });
+
+    return () => {
+      unSub();
+    };
+  }, [data.chatUid]);
+
   return (
     <div className="chat">
       <nav className="chat__info">
-        <p className="chat__username">Arnav</p>
+        <p className="chat__username">{data.user?.displayName}</p>
       </nav>
       <div className="chat__messages">
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+        {messages.map((message) => (
+          <Message message={message} />
+        ))}
       </div>
       <div className="chat__input">
         <input

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Message() {
+function Message({ message }: any) {
   return (
     <div className="my message">
       <div className="message__info">
