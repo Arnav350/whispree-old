@@ -36,16 +36,10 @@ function Search() {
     } catch (error) {
       setErr(true);
     }
-
-    console.log(user);
-  }
-
-  function handleKey(event: any) {
-    event.code === "Enter" && handleSearch();
   }
 
   async function handleSelect() {
-    const combinedUid = currentUser
+    const combinedUid: string = currentUser
       ? currentUser?.uid > user.uid
         ? currentUser?.uid + user.uid
         : user.uid + currentUser?.uid
@@ -93,7 +87,9 @@ function Search() {
         placeholder="Find a User..."
         className="sidebar__input"
         onChange={(event) => setUsername(event.target.value)}
-        onKeyDown={handleKey}
+        onKeyDown={(event): any => {
+          event.code === "Enter" && handleSearch();
+        }}
       />
       {err && <p>User not found!</p>}
       {user && (

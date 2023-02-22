@@ -6,13 +6,13 @@ function Slider() {
   const root = document.querySelector<HTMLHtmlElement>(":root");
 
   function handleChange(value: string) {
-    const images = document.querySelectorAll(".image");
+    const images = document.querySelectorAll<HTMLImageElement>(".image");
 
     if (root) {
       root.style.filter = `hue-rotate(${value}deg)`;
     }
 
-    images.forEach((image: any) => {
+    images.forEach((image: HTMLImageElement) => {
       image.style.filter = `hue-rotate(${-value}deg)`;
     });
   }

@@ -3,7 +3,11 @@ import { UseAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../App.css";
 
-function PrivateRoute({ element: Element }: any) {
+interface IObjectElement {
+  element: React.FC;
+}
+
+function PrivateRoute({ element: Element }: IObjectElement) {
   const currentUser = UseAuth();
 
   if (!currentUser) {

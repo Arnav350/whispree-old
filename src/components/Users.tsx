@@ -6,6 +6,12 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { User } from "firebase/auth";
 import "../App.css";
 
+interface IUserInfo {
+  displayName: string;
+  photoURL: string;
+  uid: string;
+}
+
 function Users() {
   const currentUser: User | null = UseAuth();
   const { dispatch } = UseChat();
@@ -31,7 +37,7 @@ function Users() {
     currentUser?.uid && getUsers();
   }, [currentUser?.uid, currentUser]);
 
-  function handleSelect(userInfo: any) {
+  function handleSelect(userInfo: IUserInfo) {
     dispatch({ type: "CHANGE_USER", payload: userInfo });
   }
 

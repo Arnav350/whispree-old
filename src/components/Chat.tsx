@@ -16,6 +16,16 @@ import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import "../App.css";
 
+interface IMessage {
+  id: string;
+  text?: string;
+  senderUid: string;
+  date: Timestamp;
+  img?: string;
+}
+
+type IMessages = IMessage[];
+
 function Chat() {
   const currentUser = UseAuth();
   const { data } = UseChat();
@@ -23,7 +33,7 @@ function Chat() {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
 
-  const [messages, setMessages] = useState<any | []>([]);
+  const [messages, setMessages] = useState<IMessages | []>([]);
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc: any) => {
@@ -60,7 +70,7 @@ function Chat() {
         () => {
           if (text) {
             getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL: any) => {
+              async (downloadURL: string) => {
                 await updateDoc(doc(db, "chats", data.chatUid), {
                   messages: arrayUnion({
                     id: uuid(),
@@ -74,7 +84,7 @@ function Chat() {
             );
           } else {
             getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL: any) => {
+              async (downloadURL: string) => {
                 await updateDoc(doc(db, "chats", data.chatUid), {
                   messages: arrayUnion({
                     id: uuid(),
@@ -143,7 +153,7 @@ function Chat() {
         <p className="chat__username">{data.user?.displayName}</p>
       </nav>
       <div className="chat__messages">
-        {messages.map((message: any, index: number) => (
+        {messages.map((message: IMessage, index: number) => (
           <Message message={message} key={messages[index].id} />
         ))}
       </div>
@@ -153,7 +163,9 @@ function Chat() {
           value={text}
           placeholder="Type Something..."
           className="chat__text"
-          onChange={(event: any) => setText(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setText(event.target.value)
+          }
         />
         <div className="chat__options">
           <RiAttachment2 className="chat__attach click" />

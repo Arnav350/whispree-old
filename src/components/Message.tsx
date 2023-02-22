@@ -4,7 +4,19 @@ import { UseChat } from "../context/ChatContext";
 import { Timestamp } from "firebase/firestore";
 import "../App.css";
 
-function Message({ message }: any) {
+interface IMessage {
+  id: string;
+  text?: string;
+  senderUid: string;
+  date: Timestamp;
+  img?: string;
+}
+
+interface IObjectMessage {
+  message: IMessage;
+}
+
+function Message({ message }: IObjectMessage) {
   const currentUser = UseAuth();
   const { data } = UseChat();
 
