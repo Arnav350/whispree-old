@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { UseAuth } from "../context/AuthContext";
-import { UseUser } from "../context/UserContext";
+import { UseChat } from "../context/ChatContext";
 import { Timestamp } from "firebase/firestore";
+import "../App.css";
 
 function Message({ message }: any) {
   const currentUser = UseAuth();
-  const { data } = UseUser();
+  const { data } = UseChat();
 
   const messageClass = useRef<HTMLDivElement>(null!);
 
@@ -30,7 +31,7 @@ function Message({ message }: any) {
               : data.user.photoURL
           }
           alt=""
-          className="message__avatar"
+          className="message__avatar image"
         />
         <p className="message__time">
           {messageDate === currentDate ? messageTime : messageDate}
@@ -39,7 +40,7 @@ function Message({ message }: any) {
       <div className="message__content">
         {message.text && <p className="message__text">{message.text}</p>}
         {message.img && (
-          <img src={message.img} alt="" className="message__image" />
+          <img src={message.img} alt="" className="message__image image" />
         )}
       </div>
     </div>

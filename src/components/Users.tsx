@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { UseAuth } from "../context/AuthContext";
-import { UseUser } from "../context/UserContext";
+import { UseChat } from "../context/ChatContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { User } from "firebase/auth";
+import "../App.css";
 
 function Users() {
   const currentUser: User | null = UseAuth();
-  const { dispatch } = UseUser();
+  const { dispatch } = UseChat();
 
   const [users, setUsers] = useState<any | []>([]);
 
@@ -28,7 +29,7 @@ function Users() {
     }
 
     currentUser?.uid && getUsers();
-  }, [currentUser?.uid]);
+  }, [currentUser?.uid, currentUser]);
 
   function handleSelect(userInfo: any) {
     dispatch({ type: "CHANGE_USER", payload: userInfo });
@@ -47,7 +48,7 @@ function Users() {
             <img
               src={chat[1].userInfo.photoURL}
               alt="Temp"
-              className="user__avatar"
+              className="user__avatar image"
             />
             <div className="user__info">
               <p className="user__username">{chat[1].userInfo.displayName}</p>

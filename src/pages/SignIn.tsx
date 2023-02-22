@@ -31,7 +31,7 @@ function SignIn() {
         <form className="sign__form" onSubmit={handleSubmit}>
           <input type="text" placeholder="Email" className="sign__input" />
           <input type="text" placeholder="Password" className="sign__input" />
-          <input type="submit" value="Sign Up" className="sign__submit" />
+          <input type="submit" value="Sign In" className="sign__submit" />
         </form>
         <p className="sign__para">
           Don't have an account?{" "}

@@ -13,6 +13,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { User } from "firebase/auth";
+import "../App.css";
 
 function Search() {
   const currentUser: User | null = UseAuth();
@@ -97,7 +98,11 @@ function Search() {
       {err && <p>User not found!</p>}
       {user && (
         <div className="user" onClick={handleSelect}>
-          <img src={user?.photoURL || ""} alt="Temp" className="user__avatar" />
+          <img
+            src={user?.photoURL || ""}
+            alt="Temp"
+            className="user__avatar image"
+          />
           <div className="user__info">
             <p className="user__username">{user?.displayName}</p>
           </div>

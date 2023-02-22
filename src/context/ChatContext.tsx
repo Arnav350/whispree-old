@@ -1,15 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { auth } from "../firebase";
 import { UseAuth } from "./AuthContext";
-import { User } from "firebase/auth";
 
 interface IProviderChildren {
   children: React.ReactNode;
 }
 
-export const UserContext = createContext<any>(null);
+export const ChatContext = createContext<any>(null);
 
-export function UserProvider({ children }: IProviderChildren) {
+export function ChatProvider({ children }: IProviderChildren) {
   const currentUser = UseAuth();
 
   const INIT_STATE = {
@@ -36,10 +34,10 @@ export function UserProvider({ children }: IProviderChildren) {
   const [state, dispatch] = useReducer(chatReducer, INIT_STATE);
 
   return (
-    <UserContext.Provider value={{ data: state, dispatch }}>
+    <ChatContext.Provider value={{ data: state, dispatch }}>
       {children}
-    </UserContext.Provider>
+    </ChatContext.Provider>
   );
 }
 
-export const UseUser = () => useContext<any | null>(UserContext);
+export const UseChat = () => useContext<any | null>(ChatContext);

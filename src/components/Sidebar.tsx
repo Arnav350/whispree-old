@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
+import Search from "./Search";
+import Slider from "./Slider";
 import { auth } from "../firebase";
 import { UseAuth } from "../context/AuthContext";
-import Search from "./Search";
 import { signOut } from "firebase/auth";
 import Users from "./Users";
+import "../App.css";
 
 function Sidebar() {
   const currentUser = UseAuth();
@@ -17,7 +19,7 @@ function Sidebar() {
             <img
               src={currentUser?.photoURL || ""}
               alt="Temp"
-              className="sidebar__avatar"
+              className="sidebar__avatar image"
             />
             <h3 className="sidebar__username">{currentUser?.displayName}</h3>
           </div>
@@ -26,8 +28,9 @@ function Sidebar() {
         <Users />
       </div>
       <div className="sidebar__bottom">
-        <button className="sidebar__logout" onClick={() => signOut(auth)}>
-          Logout
+        <Slider />
+        <button className="sidebar__signout" onClick={() => signOut(auth)}>
+          Signout
         </button>
       </div>
     </div>

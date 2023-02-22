@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Message from "./Message";
 import { db, storage } from "../firebase";
 import { UseAuth } from "../context/AuthContext";
-import { UseUser } from "../context/UserContext";
+import { UseChat } from "../context/ChatContext";
 import {
   arrayUnion,
   doc,
@@ -14,10 +14,11 @@ import {
 import { v4 as uuid } from "uuid";
 import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import "../App.css";
 
 function Chat() {
   const currentUser = UseAuth();
-  const { data } = UseUser();
+  const { data } = UseChat();
 
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
@@ -155,7 +156,7 @@ function Chat() {
           onChange={(event: any) => setText(event.target.value)}
         />
         <div className="chat__options">
-          <RiAttachment2 className="chat__attach" />
+          <RiAttachment2 className="chat__attach click" />
           <input
             type="file"
             id="chat__image"
@@ -163,7 +164,7 @@ function Chat() {
             onChange={(event: any) => setImg(event.target.files[0])}
           />
           <label htmlFor="chat__image">
-            <RiImageAddFill className="chat__attach" />
+            <RiImageAddFill className="chat__attach click" />
           </label>
           <button className="chat__send" onClick={handleSend}>
             Send
