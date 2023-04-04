@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { auth, db, storage } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -8,7 +8,8 @@ import { RiImageAddFill } from "react-icons/ri";
 import "../App.css";
 
 function SignUp() {
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState<boolean>(false);
+  const [file, setFile] = useState<string>("");
   const navigate = useNavigate();
 
   async function handleSubmit(event: any) {
@@ -74,6 +75,10 @@ function SignUp() {
     }
   }
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) setFile(URL.createObjectURL(event.target.files[0]));
+  }
+
   return (
     <div className="sign__container">
       <div className="sign">
@@ -93,10 +98,18 @@ function SignUp() {
             placeholder="Confirm Password"
             className="sign__input"
           />
-          <input type="file" id="sign__avatar" className="sign__avatar" />
+          <input
+            type="file"
+            id="sign__avatar"
+            className="sign__avatar"
+            onChange={handleChange}
+          />
           <label htmlFor="sign__avatar" className="sign__label">
-            <RiImageAddFill className="sign__attach" />
-            <p className="sign__add">Add an avatar</p>
+            <div className="sign__attach">
+              <RiImageAddFill className="sign__icon" />
+              <p className="sign__add">Add an avatar</p>
+            </div>
+            {file && <img src={file} alt="" className="sign__file" />}
           </label>
           <input type="submit" value="Sign Up" className="sign__submit" />
         </form>
