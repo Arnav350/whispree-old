@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { UseAuth } from "../context/AuthContext";
-import { UseChat } from "../context/ChatContext";
+import { useEffect, useRef } from "react";
+import { UseAuth } from "../reducers/AuthContext";
+import { UseChat } from "../reducers/ChatContext";
 import { Timestamp } from "firebase/firestore";
 import "../App.css";
 

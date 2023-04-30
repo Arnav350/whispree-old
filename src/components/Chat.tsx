@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Message from "./Message";
 import { db, storage } from "../firebase";
-import { UseAuth } from "../context/AuthContext";
-import { UseChat } from "../context/ChatContext";
+import { UseAuth } from "../reducers/AuthContext";
+import { UseChat } from "../reducers/ChatContext";
 import {
   arrayUnion,
   doc,
@@ -30,8 +30,8 @@ function Chat() {
   const currentUser = UseAuth();
   const { data } = UseChat();
 
-  const [text, setText] = useState("");
-  const [img, setImg] = useState(null);
+  const [text, setText] = useState<string>("");
+  const [img, setImg] = useState<File | null>(null);
 
   const [messages, setMessages] = useState<IMessages | []>([]);
 
@@ -45,7 +45,9 @@ function Chat() {
     };
   }, [data.chatUid]);
 
-  async function handleSend() {
+  async function handleSend(e: any) {
+    e.preventDefault();
+
     if (img) {
       const storageRef = ref(storage, uuid());
 
@@ -157,7 +159,7 @@ function Chat() {
           <Message message={message} key={messages[index].id} />
         ))}
       </div>
-      <div className="chat__input">
+      <form className="chat__input" onSubmit={handleSend}>
         <input
           type="text"
           value={text}
@@ -178,11 +180,9 @@ function Chat() {
           <label htmlFor="chat__image">
             <RiImageAddFill className="chat__attach click" />
           </label>
-          <button className="chat__send" onClick={handleSend}>
-            Send
-          </button>
+          <input type="submit" value="Send" className="chat__send" />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

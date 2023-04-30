@@ -1,5 +1,5 @@
 import React from "react";
-import { UseAuth } from "../context/AuthContext";
+import { UseAuth } from "../reducers/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../App.css";
 

@@ -1,19 +1,18 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../App.css";
 
 function Slider() {
-  const sliderClass = useRef<HTMLInputElement>(null!);
   const root = document.querySelector<HTMLHtmlElement>(":root");
 
-  function handleChange(value: string) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const images = document.querySelectorAll<HTMLImageElement>(".image");
 
     if (root) {
-      root.style.filter = `hue-rotate(${value}deg)`;
+      root.style.filter = `hue-rotate(${event.target.value}deg)`;
     }
 
     images.forEach((image: HTMLImageElement) => {
-      image.style.filter = `hue-rotate(${-value}deg)`;
+      image.style.filter = `hue-rotate(${-event.target.value}deg)`;
     });
   }
 
@@ -22,9 +21,9 @@ function Slider() {
       type="range"
       min="1"
       max="360"
+      defaultValue="1"
       className="slider"
-      ref={sliderClass}
-      onChange={(event) => handleChange(event.target.value)}
+      onChange={handleChange}
     />
   );
 }

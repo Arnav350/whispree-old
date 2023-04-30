@@ -1,10 +1,10 @@
-import React from "react";
 import Search from "./Search";
 import Slider from "./Slider";
 import { auth } from "../firebase";
-import { UseAuth } from "../context/AuthContext";
+import { UseAuth } from "../reducers/AuthContext";
 import { signOut } from "firebase/auth";
 import Users from "./Users";
+import Logo from "../assets/Logo.png";
 import "../App.css";
 
 function Sidebar() {
@@ -17,7 +17,7 @@ function Sidebar() {
           <h1 className="sidebar__logo">AnySpeak</h1>
           <div className="sidebar__profile">
             <img
-              src={currentUser?.photoURL || ""}
+              src={currentUser?.photoURL || Logo}
               alt="Temp"
               className="sidebar__avatar image"
             />

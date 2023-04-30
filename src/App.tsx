@@ -1,5 +1,4 @@
-import React from "react";
-import { UseAuth } from "./context/AuthContext";
+import { UseAuth } from "./reducers/AuthContext";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";

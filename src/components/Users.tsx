@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { UseAuth } from "../context/AuthContext";
-import { UseChat } from "../context/ChatContext";
+import { UseAuth } from "../reducers/AuthContext";
+import { UseChat } from "../reducers/ChatContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { User } from "firebase/auth";
 import "../App.css";

@@ -1,36 +1,84 @@
-import React, { useState } from "react";
-import { auth, db, storage } from "../firebase";
+import React, { useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { auth, db, storage } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import { FormReducer } from "../reducers/FormReducer";
+import { z } from "zod";
 import { RiImageAddFill } from "react-icons/ri";
 import "../App.css";
 
+const User = z
+  .object({
+    username: z
+      .string({
+        required_error: "Username is required",
+      })
+      .min(3, { message: "Username must be at least 3 characters" })
+      .max(20, { message: "Username must be at most 20 chacters" }),
+    email: z
+      .string({
+        required_error: "Email is required",
+      })
+      .email({ message: "Invalid email address" }),
+    password: z
+      .string({
+        required_error: "Password is required",
+      })
+      .min(6, { message: "Password must be at least 6 characters" })
+      .max(20, { message: "Password must be at most 20 chacters" }),
+    confirm: z.string({
+      required_error: "Confirm Password is required",
+    }),
+  })
+  .strict()
+  .refine(({ password, confirm }) => password === confirm, {
+    path: ["confirm"],
+    message: "Passwords do not match",
+  });
+
 function SignUp() {
   const [err, setErr] = useState<boolean>(false);
-  const [file, setFile] = useState<string>("");
+  const [file, setFile] = useState<File>(null!);
   const navigate = useNavigate();
 
-  async function handleSubmit(event: any) {
+  const [formData, setFormData] = useReducer(FormReducer, {});
+  const [formError, setFormError] = useState<Record<string, string>>({});
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const username = event.target[0].value;
-    const email = event.target[1].value;
-    const password = event.target[2].value;
-    const confirm = event.target[3].value;
-    const avatar = event.target[4].files[0];
-
-    if (password !== confirm) {
-      setErr(true);
-      return null;
+    const parsedUser = User.safeParse(formData);
+    if (parsedUser.success) {
+      setFormError({});
+    } else {
+      const error = parsedUser.error;
+      let newError = {};
+      for (const issue of error.issues) {
+        newError = {
+          ...newError,
+          [issue.path[0]]: issue.message,
+        };
+      }
+      setFormError(newError);
+      return;
     }
+
+    console.log("hello");
+
+    const form = new FormData(event.currentTarget);
+
+    const username: string = `${form.get("username")}`;
+    const email: string = `${form.get("email")}`;
+    const password: string = `${form.get("password")}`;
+
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
       const storageRef = ref(storage, username);
 
-      const uploadTask = uploadBytesResumable(storageRef, avatar);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
         "state_changed",
@@ -76,7 +124,7 @@ function SignUp() {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.files) setFile(URL.createObjectURL(event.target.files[0]));
+    if (event.target.files) setFile(event.target.files[0]);
   }
 
   return (
@@ -86,21 +134,58 @@ function SignUp() {
         <h3 className="sign__logo">AnySpeak</h3>
         {err && <p>There was an error</p>}
         <form className="sign__form" onSubmit={handleSubmit}>
-          <input type="text" placeholder="Username" className="sign__input" />
-          <input type="email" placeholder="Email" className="sign__input" />
-          <input
-            type="password"
-            placeholder="Password"
-            className="sign__input"
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="sign__input"
-          />
+          <div className="sign__box">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              className="sign__input"
+              onChange={setFormData}
+            />
+            {formError.username && (
+              <p className="sign__error">{formError.username}</p>
+            )}
+          </div>
+          <div className="sign__box">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              className="sign__input"
+              onChange={setFormData}
+            />
+            {formError.email && (
+              <p className="sign__error">{formError.email}</p>
+            )}
+          </div>
+          <div className="sign__box">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              className="sign__input"
+              onChange={setFormData}
+            />
+            {formError.password && (
+              <p className="sign__error">{formError.password}</p>
+            )}
+          </div>
+          <div className="sign__box">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="confirm"
+              className="sign__input"
+              onChange={setFormData}
+            />
+            {formError.confirm && (
+              <p className="sign__error">{formError.confirm}</p>
+            )}
+          </div>
           <input
             type="file"
             id="sign__avatar"
+            name="avatar"
             className="sign__avatar"
             onChange={handleChange}
           />
@@ -109,7 +194,13 @@ function SignUp() {
               <RiImageAddFill className="sign__icon" />
               <p className="sign__add">Add an avatar</p>
             </div>
-            {file && <img src={file} alt="" className="sign__file" />}
+            {file && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt=""
+                className="sign__file"
+              />
+            )}
           </label>
           <input type="submit" value="Sign Up" className="sign__submit" />
         </form>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -30,7 +30,11 @@ function SignIn() {
         {err && <p>There was an error</p>}
         <form className="sign__form" onSubmit={handleSubmit}>
           <input type="text" placeholder="Email" className="sign__input" />
-          <input type="text" placeholder="Password" className="sign__input" />
+          <input
+            type="password"
+            placeholder="Password"
+            className="sign__input"
+          />
           <input type="submit" value="Sign In" className="sign__submit" />
         </form>
         <p className="sign__para">

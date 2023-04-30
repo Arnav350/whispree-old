@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { AuthProvider } from "./context/AuthContext";
-import { ChatProvider } from "./context/ChatContext";
+import { AuthProvider } from "./reducers/AuthContext";
+import { ChatProvider } from "./reducers/ChatContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
