@@ -1,9 +1,9 @@
 import Search from "./Search";
+import Users from "./Users";
 import Slider from "./Slider";
 import { auth } from "../firebase";
 import { UseAuth } from "../reducers/AuthContext";
 import { signOut } from "firebase/auth";
-import Users from "./Users";
 import Logo from "../assets/Logo.png";
 import "../App.css";
 
@@ -19,7 +19,7 @@ function Sidebar() {
             <img
               src={currentUser?.photoURL || Logo}
               alt="Temp"
-              className="sidebar__avatar image"
+              className="sidebar__avatar"
             />
             <h3 className="sidebar__username">{currentUser?.displayName}</h3>
           </div>

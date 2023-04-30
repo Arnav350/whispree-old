@@ -8,11 +8,15 @@ function SignIn() {
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const email = event.target[0].value;
-    const password = event.target[1].value;
+    const Form = new FormData(event.currentTarget);
+
+    const email = Form.get("email")?.toString();
+    const password = Form.get("password")?.toString();
+
+    if (!email || !password) return;
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -29,9 +33,15 @@ function SignIn() {
         <h3 className="sign__logo">AnySpeak</h3>
         {err && <p>There was an error</p>}
         <form className="sign__form" onSubmit={handleSubmit}>
-          <input type="text" placeholder="Email" className="sign__input" />
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            className="sign__input"
+          />
           <input
             type="password"
+            name="password"
             placeholder="Password"
             className="sign__input"
           />

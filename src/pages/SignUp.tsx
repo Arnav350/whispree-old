@@ -8,6 +8,7 @@ import { FormReducer } from "../reducers/FormReducer";
 import { z } from "zod";
 import { RiImageAddFill } from "react-icons/ri";
 import "../App.css";
+import Logo from "../assets/Logo.png";
 
 const User = z
   .object({
@@ -40,7 +41,7 @@ const User = z
 
 function SignUp() {
   const [err, setErr] = useState<boolean>(false);
-  const [file, setFile] = useState<File>(null!);
+  const [file, setFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useReducer(FormReducer, {});
@@ -65,59 +66,63 @@ function SignUp() {
       return;
     }
 
-    console.log("hello");
-
-    const form = new FormData(event.currentTarget);
-
-    const username: string = `${form.get("username")}`;
-    const email: string = `${form.get("email")}`;
-    const password: string = `${form.get("password")}`;
-
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      const storageRef = ref(storage, username);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error: any) => {
-          setErr(true);
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(res.user, {
-              displayName: username,
-              photoURL: downloadURL,
-            });
-
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName: username,
-              email,
-              photoURL: downloadURL,
-            });
-
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-            navigate("/");
-          });
-        }
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
       );
+
+      fetch(Logo)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const avatar = file || new File([blob], "default.png", blob);
+
+          const storageRef = ref(storage, formData.username);
+
+          const uploadTask = uploadBytesResumable(storageRef, avatar);
+
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Upload is " + progress + "% done");
+              switch (snapshot.state) {
+                case "paused":
+                  console.log("Upload is paused");
+                  break;
+                case "running":
+                  console.log("Upload is running");
+                  break;
+              }
+            },
+            (error) => {
+              setErr(true);
+              console.log(error);
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then(
+                async (downloadURL) => {
+                  await updateProfile(res.user, {
+                    displayName: formData.username,
+                    photoURL: downloadURL,
+                  });
+
+                  await setDoc(doc(db, "users", res.user.uid), {
+                    uid: res.user.uid,
+                    displayName: formData.username,
+                    email: formData.email,
+                    photoURL: downloadURL,
+                  });
+
+                  await setDoc(doc(db, "userChats", res.user.uid), {});
+                  navigate("/");
+                }
+              );
+            }
+          );
+        });
     } catch (error) {
       setErr(true);
     }
@@ -184,8 +189,9 @@ function SignUp() {
           </div>
           <input
             type="file"
-            id="sign__avatar"
+            accept="image/*"
             name="avatar"
+            id="sign__avatar"
             className="sign__avatar"
             onChange={handleChange}
           />

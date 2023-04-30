@@ -26,13 +26,15 @@ function Message({ message }: IObjectMessage) {
     messageClass.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  const messageDate = message.date.toDate().toString().substring(4, 15);
-  const currentDate = Timestamp.now().toDate().toString().substring(4, 15);
+  const messageDate = message.date.toDate().toString().substring(4, 10);
+  const currentDate = Timestamp.now().toDate().toString().substring(4, 10);
   const messageTime = message.date.toDate().toString().substring(16, 21);
 
   return (
     <div
-      className={`message ${message.senderUid === currentUser?.uid && "my"}`}
+      className={`message${
+        message.senderUid === currentUser?.uid ? " my" : ""
+      }`}
       ref={messageClass}
     >
       <div className="message__info">
@@ -43,7 +45,7 @@ function Message({ message }: IObjectMessage) {
               : data.user.photoURL
           }
           alt=""
-          className="message__avatar image"
+          className="message__avatar"
         />
         <p className="message__time">
           {messageDate === currentDate ? messageTime : messageDate}
@@ -52,7 +54,7 @@ function Message({ message }: IObjectMessage) {
       <div className="message__content">
         {message.text && <p className="message__text">{message.text}</p>}
         {message.img && (
-          <img src={message.img} alt="" className="message__image image" />
+          <img src={message.img} alt="" className="message__image" />
         )}
       </div>
     </div>

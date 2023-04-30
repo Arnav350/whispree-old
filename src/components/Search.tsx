@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { db } from "../firebase";
 import { UseAuth } from "../reducers/AuthContext";
 import {
@@ -13,7 +13,15 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { User } from "firebase/auth";
+import { RiSearchLine, RiUserAddLine } from "react-icons/ri";
 import "../App.css";
+
+// interface IUser {
+//   displayName: string;
+//   email: string;
+//   photoURL: string;
+//   uid: string;
+// }
 
 function Search() {
   const currentUser: User | null = UseAuth();
@@ -22,7 +30,9 @@ function Search() {
   const [user, setUser] = useState<any | null>(null);
   const [err, setErr] = useState<boolean>(false);
 
-  async function handleSearch() {
+  async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     const q = query(
       collection(db, "users"),
       where("displayName", "==", username)
@@ -46,7 +56,7 @@ function Search() {
       : "";
 
     try {
-      const res: any = await getDoc(doc(db, "chats", combinedUid));
+      const res = await getDoc(doc(db, "chats", combinedUid));
 
       if (!res.exists()) {
         await setDoc(doc(db, "chats", combinedUid), { messages: [] });
@@ -81,26 +91,28 @@ function Search() {
 
   return (
     <div className="sidebar__search">
-      <input
-        type="text"
-        value={username}
-        placeholder="Find a User..."
-        className="sidebar__input"
-        onChange={(event) => setUsername(event.target.value)}
-        onKeyDown={(event): any => {
-          event.code === "Enter" && handleSearch();
-        }}
-      />
+      <form className="sidebar__bar" onSubmit={handleSearch}>
+        <RiSearchLine className="sidebar__magnify" />
+        <input
+          type="text"
+          value={username}
+          placeholder="Find a User..."
+          className="sidebar__input"
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        {username && (
+          <label htmlFor="sidebar__submit" className="sidebar__label">
+            <RiUserAddLine className="sidebar__add click" />
+          </label>
+        )}
+        <input type="submit" id="sidebar__submit" className="sidebar__submit" />
+      </form>
       {err && <p>User not found!</p>}
       {user && (
         <div className="user" onClick={handleSelect}>
-          <img
-            src={user?.photoURL || ""}
-            alt="Temp"
-            className="user__avatar image"
-          />
+          <img src={user.photoURL} alt="Avatar" className="user__avatar" />
           <div className="user__info">
-            <p className="user__username">{user?.displayName}</p>
+            <p className="user__username">{user.displayName}</p>
           </div>
         </div>
       )}

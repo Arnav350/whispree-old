@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Message from "./Message";
-import { db, storage } from "../firebase";
 import { UseAuth } from "../reducers/AuthContext";
 import { UseChat } from "../reducers/ChatContext";
+import { db, storage } from "../firebase";
 import {
   arrayUnion,
   doc,
@@ -11,9 +11,9 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuid } from "uuid";
 import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import "../App.css";
 
 interface IMessage {
@@ -36,7 +36,7 @@ function Chat() {
   const [messages, setMessages] = useState<IMessages | []>([]);
 
   useEffect(() => {
-    const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc: any) => {
+    const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
     });
 
@@ -45,8 +45,8 @@ function Chat() {
     };
   }, [data.chatUid]);
 
-  async function handleSend(e: any) {
-    e.preventDefault();
+  async function handleSend(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     if (img) {
       const storageRef = ref(storage, uuid());
@@ -68,7 +68,7 @@ function Chat() {
               break;
           }
         },
-        (error: any) => {},
+        (error) => {},
         () => {
           if (text) {
             getDownloadURL(uploadTask.snapshot.ref).then(
@@ -152,7 +152,8 @@ function Chat() {
   return (
     <div className="chat">
       <nav className="chat__info">
-        <p className="chat__username">{data.user?.displayName}</p>
+        <img src={data.user.photoURL} alt="avatar" className="chat__avatar" />
+        <p className="chat__username">{data.user.displayName}</p>
       </nav>
       <div className="chat__messages">
         {messages.map((message: IMessage, index: number) => (
@@ -175,7 +176,9 @@ function Chat() {
             type="file"
             id="chat__image"
             className="chat__image"
-            onChange={(event: any) => setImg(event.target.files[0])}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setImg(event.target.files ? event.target.files[0] : null)
+            }
           />
           <label htmlFor="chat__image">
             <RiImageAddFill className="chat__attach click" />

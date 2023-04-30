@@ -3,6 +3,7 @@ import { db } from "../firebase";
 import { UseAuth } from "../reducers/AuthContext";
 import { UseChat } from "../reducers/ChatContext";
 import { doc, onSnapshot } from "firebase/firestore";
+// import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { User } from "firebase/auth";
 import "../App.css";
 
@@ -11,6 +12,16 @@ interface IUserInfo {
   photoURL: string;
   uid: string;
 }
+
+// interface IUserChat {
+//   date: Timestamp;
+//   lastMessage?: {
+//     text: string;
+//   };
+//   userInfo: IUserInfo;
+// }
+
+// type IUserChats = IUserChat[];
 
 function Users() {
   const currentUser: User | null = UseAuth();

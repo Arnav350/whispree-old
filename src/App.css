@@ -242,14 +242,41 @@ button:hover {
   border-bottom: 0.2px solid #f8f8f844;
 }
 
-.sidebar__input {
+.sidebar__bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
   padding: 16px;
-  width: 100%;
+}
+
+.sidebar__magnify {
+  color: #f8f8f8;
+  font-size: 18px;
+}
+
+.sidebar__input {
+  width: 80%;
   color: #f8f8f8;
 }
 
 .sidebar__input::placeholder {
+  color: #eee;
+}
+
+.sidebar__label {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar__add {
   color: #f8f8f8;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.sidebar__submit {
+  display: none;
 }
 
 .sidebar__bottom {
@@ -337,6 +364,7 @@ button:hover {
 .chat__info {
   display: flex;
   align-items: center;
+  gap: 8px;
   padding: 16px;
   height: 72px;
   background-blend-mode: overlay;
@@ -344,8 +372,15 @@ button:hover {
   background-color: var(--color-dark);
 }
 
+.chat__avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+}
+
 .chat__username {
   color: #f8f8f8;
+  font-size: 18px;
 }
 
 .chat__input {
@@ -451,6 +486,8 @@ button:hover {
 }
 
 .message__time {
+  width: 48px;
+  text-align: center;
   font-size: 14px;
   font-weight: 200;
 }
@@ -459,8 +496,8 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
-  max-width: 80%;
+  gap: 4px;
+  max-width: 50%;
 }
 
 .message__text {
@@ -470,7 +507,7 @@ button:hover {
 }
 
 .message__image {
-  width: 50%;
+  width: 80%;
   border-radius: 16px;
 }
 
