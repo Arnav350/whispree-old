@@ -9,7 +9,7 @@
 
 :root {
   --color-light: #ffa69e;
-  --color-dark: #ff686b;
+  --color-dark: #ff878a;
 }
 
 button,
@@ -33,6 +33,31 @@ button:hover {
   scale: 1.1;
 }
 
+/* scrollbars */
+
+.chat__messages::-webkit-scrollbar,
+.user__container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.chat__messages::-webkit-scrollbar-track,
+.user__container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.chat__messages::-webkit-scrollbar-thumb,
+.user__container::-webkit-scrollbar-thumb {
+  background-color: var(--color-light);
+  border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+
+.chat__messages::-webkit-scrollbar-thumb:hover,
+.user__container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-dark);
+}
+
 /* sign */
 
 .sign__container {
@@ -53,6 +78,7 @@ button:hover {
   padding: 16px;
   background-color: #f8f8f8;
   border-radius: 16px;
+  box-shadow: 0 0 20px 0 #00000044;
 }
 
 .sign__title {
@@ -155,7 +181,7 @@ button:hover {
 .sign__para {
   padding: 8px;
   font-size: 12px;
-  color: #888888;
+  color: #888;
 }
 
 .sign__sign {
@@ -189,6 +215,7 @@ button:hover {
   width: 65%;
   border-radius: 24px;
   overflow: hidden;
+  box-shadow: 0 0 20px 4px #00000044;
 }
 
 /* sidebar */
@@ -208,7 +235,7 @@ button:hover {
   padding: 8px;
   height: 72px;
   background-blend-mode: overlay;
-  background-image: linear-gradient(#666666, #666666);
+  background-image: linear-gradient(#666, #666);
   background-color: var(--color-dark);
 }
 
@@ -222,60 +249,61 @@ button:hover {
 .sidebar__profile {
   display: flex;
   align-items: center;
+  gap: 8px;
+  padding: 8px;
 }
 
 .sidebar__avatar {
-  margin: 4px;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
 .sidebar__username {
-  padding: 8px;
-  color: white;
+  color: #f8f8f8;
   font-size: 14px;
   font-weight: 400;
 }
 
-.sidebar__search {
-  border-bottom: 0.2px solid #f8f8f844;
+.search {
+  border-bottom: 2px solid #f8f8f844;
 }
 
-.sidebar__bar {
+.search__bar {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 4px;
-  padding: 16px;
+  padding: 8px 16px;
 }
 
-.sidebar__magnify {
+.search__magnify {
   color: #f8f8f8;
   font-size: 18px;
 }
 
-.sidebar__input {
+.search__input {
+  height: 30px;
   width: 80%;
   color: #f8f8f8;
 }
 
-.sidebar__input::placeholder {
+.search__input::placeholder {
   color: #eee;
 }
 
-.sidebar__label {
+.search__label {
   display: flex;
   align-items: center;
 }
 
-.sidebar__add {
+.search__add {
   color: #f8f8f8;
   font-size: 18px;
   cursor: pointer;
 }
 
-.sidebar__submit {
+.search__submit {
   display: none;
 }
 
@@ -290,7 +318,7 @@ button:hover {
   margin: 0 16px;
   padding: 8px 16px;
   background-blend-mode: overlay;
-  background-image: linear-gradient(#aaaaaa, #aaaaaa);
+  background-image: linear-gradient(#aaa, #aaa);
   background-color: var(--color-dark);
   color: #f8f8f8;
   font-size: 12px;
@@ -298,17 +326,23 @@ button:hover {
 
 /* users */
 
+.user__container {
+  overflow-y: auto;
+  height: 400px;
+}
+
 .user {
   display: flex;
   align-items: center;
-  padding: 8px;
+  gap: 8px;
+  padding: 12px;
+  background-blend-mode: overlay;
+  background-color: var(--color-dark);
   cursor: pointer;
 }
 
 .user:hover {
-  background-blend-mode: overlay;
-  background-image: linear-gradient(#666666, #666666);
-  background-color: var(--color-dark);
+  background-image: linear-gradient(#666, #666);
 }
 
 .user__avatar {
@@ -320,15 +354,32 @@ button:hover {
 .user__info {
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  color: #f8f8f8;
+  width: 100%;
+}
+
+.user__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user__time {
+  color: #f8f8f888;
+  font-size: 14px;
 }
 
 .user__username {
+  color: #f8f8f8;
   font-size: 18px;
 }
 
 .user__message {
+  color: #f8f8f888;
+  overflow-y: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   font-size: 14px;
 }
 
@@ -358,6 +409,7 @@ button:hover {
 /* chat */
 
 .chat {
+  position: relative;
   flex: 2;
 }
 
@@ -368,7 +420,7 @@ button:hover {
   padding: 16px;
   height: 72px;
   background-blend-mode: overlay;
-  background-image: linear-gradient(#aaaaaa, #aaaaaa);
+  background-image: linear-gradient(#aaa, #aaa);
   background-color: var(--color-dark);
 }
 
@@ -381,6 +433,30 @@ button:hover {
 .chat__username {
   color: #f8f8f8;
   font-size: 18px;
+}
+
+.chat__preview {
+  position: absolute;
+  bottom: 52px;
+  left: 32px;
+  padding: 8px;
+  background-color: #f8f8f8;
+}
+
+.chat__img {
+  max-height: 160px;
+  max-width: 240px;
+  vertical-align: bottom;
+}
+
+.chat__close {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  padding: 4px;
+  color: #222;
+  font-size: 28px;
+  cursor: pointer;
 }
 
 .chat__input {
@@ -400,10 +476,6 @@ button:hover {
   font-size: 16px;
 }
 
-.chat__text::placeholder {
-  color: #dddddd;
-}
-
 .chat__image {
   display: none;
 }
@@ -414,19 +486,24 @@ button:hover {
 }
 
 .chat__attach {
+  display: flex;
+  align-items: center;
+}
+
+.chat__add {
   padding: 4px;
   height: 32px;
   width: 32px;
-  color: #888888;
+  color: #888;
   cursor: pointer;
 }
 
 .chat__send {
-  margin: 0 8px 0 16px;
+  margin: 0 8px;
   padding: 8px 16px;
   color: #f8f8f8;
   background-blend-mode: overlay;
-  background-image: linear-gradient(#dddddd, #dddddd);
+  background-image: linear-gradient(#aaa, #aaa);
   background-color: var(--color-dark);
 }
 
@@ -440,28 +517,9 @@ button:hover {
   padding: 8px 12px 8px 8px;
   height: calc(100% - 128px);
   background-blend-mode: overlay;
-  background-image: linear-gradient(#bbbbbb, #bbbbbb);
+  background-image: linear-gradient(#bbb, #bbb);
   background-color: var(--color-light);
   overflow-y: scroll;
-}
-
-.chat__messages::-webkit-scrollbar {
-  width: 12px;
-}
-
-.chat__messages::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.chat__messages::-webkit-scrollbar-thumb {
-  background-color: var(--color-light);
-  border: 4px solid transparent;
-  border-radius: 8px;
-  background-clip: padding-box;
-}
-
-.chat__messages::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-dark);
 }
 
 .message {

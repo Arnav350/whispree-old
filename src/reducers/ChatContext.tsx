@@ -5,7 +5,7 @@ interface IProviderChildren {
   children: React.ReactNode;
 }
 
-export const ChatContext = createContext<any>(null);
+export const ChatContext = createContext<any | null>(null);
 
 export function ChatProvider({ children }: IProviderChildren) {
   const currentUser = UseAuth();

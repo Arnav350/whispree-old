@@ -12,21 +12,19 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <div className="sidebar__main">
-        <nav className="sidebar__nav">
-          <h1 className="sidebar__logo">AnySpeak</h1>
-          <div className="sidebar__profile">
-            <img
-              src={currentUser?.photoURL || Logo}
-              alt="Temp"
-              className="sidebar__avatar"
-            />
-            <h3 className="sidebar__username">{currentUser?.displayName}</h3>
-          </div>
-        </nav>
-        <Search />
-        <Users />
-      </div>
+      <nav className="sidebar__nav">
+        <h1 className="sidebar__logo">AnySpeak</h1>
+        <div className="sidebar__profile">
+          <img
+            src={currentUser?.photoURL || Logo}
+            alt="Temp"
+            className="sidebar__avatar image"
+          />
+          <h3 className="sidebar__username">{currentUser?.displayName}</h3>
+        </div>
+      </nav>
+      <Search />
+      <Users />
       <div className="sidebar__bottom">
         <Slider />
         <button className="sidebar__signout" onClick={() => signOut(auth)}>

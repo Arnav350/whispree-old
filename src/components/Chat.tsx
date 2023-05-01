@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuid } from "uuid";
-import { RiImageAddFill, RiAttachment2 } from "react-icons/ri";
+import { RiImageAddFill, RiCloseCircleFill } from "react-icons/ri";
 import "../App.css";
 
 interface IMessage {
@@ -112,38 +112,19 @@ function Chat() {
     }
 
     if (currentUser) {
-      if (text) {
-        await updateDoc(doc(db, "userChats", currentUser.uid), {
-          [data.chatUid + ".lastMessage"]: {
-            text,
-          },
-          [data.chatUid + ".date"]: serverTimestamp(),
-        });
-      } else {
-        await updateDoc(doc(db, "userChats", currentUser.uid), {
-          [data.chatUid + ".lastMessage"]: {
-            text: "Attachment: 1",
-          },
-          [data.chatUid + ".date"]: serverTimestamp(),
-        });
-      }
-    }
-
-    if (text) {
-      await updateDoc(doc(db, "userChats", data.user.uid), {
+      await updateDoc(doc(db, "userChats", currentUser.uid), {
         [data.chatUid + ".lastMessage"]: {
-          text,
-        },
-        [data.chatUid + ".date"]: serverTimestamp(),
-      });
-    } else {
-      await updateDoc(doc(db, "userChats", data.user.uid), {
-        [data.chatUid + ".lastMessage"]: {
-          text: "Attachment: 1",
+          text: text || "Attachment: 1",
         },
         [data.chatUid + ".date"]: serverTimestamp(),
       });
     }
+    await updateDoc(doc(db, "userChats", data.user.uid), {
+      [data.chatUid + ".lastMessage"]: {
+        text: text || "Attachment: 1",
+      },
+      [data.chatUid + ".date"]: serverTimestamp(),
+    });
 
     setText("");
     setImg(null);
@@ -152,7 +133,13 @@ function Chat() {
   return (
     <div className="chat">
       <nav className="chat__info">
-        <img src={data.user.photoURL} alt="avatar" className="chat__avatar" />
+        {data.user.photoURL && (
+          <img
+            src={data.user.photoURL}
+            alt="avatar"
+            className="chat__avatar image"
+          />
+        )}
         <p className="chat__username">{data.user.displayName}</p>
       </nav>
       <div className="chat__messages">
@@ -160,28 +147,44 @@ function Chat() {
           <Message message={message} key={messages[index].id} />
         ))}
       </div>
+      {img && (
+        <figure className="chat__preview">
+          <img
+            src={URL.createObjectURL(img)}
+            alt="Preview"
+            className="chat__img image"
+          />
+          <RiCloseCircleFill
+            className="chat__close"
+            onClick={() => setImg(null)}
+          />
+        </figure>
+      )}
       <form className="chat__input" onSubmit={handleSend}>
         <input
           type="text"
           value={text}
-          placeholder="Type Something..."
+          placeholder={
+            Object.keys(data.user).length ? "Send a message" : "Click on a user"
+          }
+          readOnly={Object.keys(data.user).length ? false : true}
           className="chat__text"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setText(event.target.value)
           }
         />
         <div className="chat__options">
-          <RiAttachment2 className="chat__attach click" />
           <input
             type="file"
+            accept="image/*"
             id="chat__image"
             className="chat__image"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setImg(event.target.files ? event.target.files[0] : null)
             }
           />
-          <label htmlFor="chat__image">
-            <RiImageAddFill className="chat__attach click" />
+          <label htmlFor="chat__image" className="chat__attach">
+            <RiImageAddFill className="chat__add click" />
           </label>
           <input type="submit" value="Send" className="chat__send" />
         </div>

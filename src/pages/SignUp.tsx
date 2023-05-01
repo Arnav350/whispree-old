@@ -204,7 +204,7 @@ function SignUp() {
               <img
                 src={URL.createObjectURL(file)}
                 alt=""
-                className="sign__file"
+                className="sign__file image"
               />
             )}
           </label>

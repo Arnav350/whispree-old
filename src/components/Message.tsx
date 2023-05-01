@@ -45,7 +45,7 @@ function Message({ message }: IObjectMessage) {
               : data.user.photoURL
           }
           alt=""
-          className="message__avatar"
+          className="message__avatar image"
         />
         <p className="message__time">
           {messageDate === currentDate ? messageTime : messageDate}
@@ -54,7 +54,7 @@ function Message({ message }: IObjectMessage) {
       <div className="message__content">
         {message.text && <p className="message__text">{message.text}</p>}
         {message.img && (
-          <img src={message.img} alt="" className="message__image" />
+          <img src={message.img} alt="" className="message__image image" />
         )}
       </div>
     </div>

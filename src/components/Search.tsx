@@ -3,31 +3,25 @@ import { db } from "../firebase";
 import { UseAuth } from "../reducers/AuthContext";
 import {
   collection,
-  query,
-  where,
+  DocumentData,
   doc,
   getDocs,
   getDoc,
+  query,
+  serverTimestamp,
   setDoc,
   updateDoc,
-  serverTimestamp,
+  where,
 } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { RiSearchLine, RiUserAddLine } from "react-icons/ri";
 import "../App.css";
 
-// interface IUser {
-//   displayName: string;
-//   email: string;
-//   photoURL: string;
-//   uid: string;
-// }
-
 function Search() {
   const currentUser: User | null = UseAuth();
 
   const [username, setUsername] = useState<string>("");
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<DocumentData | null>(null);
   const [err, setErr] = useState<boolean>(false);
 
   async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
@@ -50,9 +44,9 @@ function Search() {
 
   async function handleSelect() {
     const combinedUid: string = currentUser
-      ? currentUser?.uid > user.uid
-        ? currentUser?.uid + user.uid
-        : user.uid + currentUser?.uid
+      ? currentUser?.uid > user?.uid
+        ? currentUser?.uid + user?.uid
+        : user?.uid + currentUser?.uid
       : "";
 
     try {
@@ -90,27 +84,31 @@ function Search() {
   }
 
   return (
-    <div className="sidebar__search">
-      <form className="sidebar__bar" onSubmit={handleSearch}>
-        <RiSearchLine className="sidebar__magnify" />
+    <div className="search">
+      <form className="search__bar" onSubmit={handleSearch}>
+        <RiSearchLine className="search__magnify" />
         <input
           type="text"
           value={username}
           placeholder="Find a User..."
-          className="sidebar__input"
+          className="search__input"
           onChange={(event) => setUsername(event.target.value)}
         />
         {username && (
-          <label htmlFor="sidebar__submit" className="sidebar__label">
-            <RiUserAddLine className="sidebar__add click" />
+          <label htmlFor="search__submit" className="search__label">
+            <RiUserAddLine className="search__add click" />
           </label>
         )}
-        <input type="submit" id="sidebar__submit" className="sidebar__submit" />
+        <input type="submit" id="search__submit" className="search__submit" />
       </form>
       {err && <p>User not found!</p>}
       {user && (
         <div className="user" onClick={handleSelect}>
-          <img src={user.photoURL} alt="Avatar" className="user__avatar" />
+          <img
+            src={user.photoURL}
+            alt="Avatar"
+            className="user__avatar image"
+          />
           <div className="user__info">
             <p className="user__username">{user.displayName}</p>
           </div>
