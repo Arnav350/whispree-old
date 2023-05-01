@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "../App.css";
 
 function SignIn() {
-  const [err, setErr] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -22,7 +20,9 @@ function SignIn() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
     } catch (error) {
-      setErr(true);
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
   }
 
@@ -30,8 +30,7 @@ function SignIn() {
     <div className="sign__container">
       <div className="sign">
         <h1 className="sign__title">Sign In</h1>
-        <h3 className="sign__logo">AnySpeak</h3>
-        {err && <p>There was an error</p>}
+        <h3 className="sign__logo">Whispree</h3>
         <form className="sign__form" onSubmit={handleSubmit}>
           <input
             type="text"

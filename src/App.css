@@ -242,8 +242,7 @@ button:hover {
 .sidebar__logo {
   padding: 8px;
   color: #f8f8f8;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 22px;
 }
 
 .sidebar__profile {
@@ -260,9 +259,10 @@ button:hover {
 }
 
 .sidebar__username {
+  max-width: 132px;
   color: #f8f8f8;
   font-size: 14px;
-  font-weight: 400;
+  word-wrap: break-word;
 }
 
 .search {
@@ -311,17 +311,18 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px;
   height: 56px;
 }
 
 .sidebar__signout {
-  margin: 0 16px;
+  margin: 8px;
   padding: 8px 16px;
   background-blend-mode: overlay;
   background-image: linear-gradient(#aaa, #aaa);
   background-color: var(--color-dark);
   color: #f8f8f8;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* users */
@@ -370,8 +371,11 @@ button:hover {
 }
 
 .user__username {
+  max-width: 144px;
   color: #f8f8f8;
   font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user__message {
@@ -388,7 +392,7 @@ button:hover {
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  margin: 16px;
+  margin: 8px;
   height: 16px;
   background: #f8f8f8;
   border-radius: 8px;

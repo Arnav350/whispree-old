@@ -37,15 +37,20 @@ function Users() {
 
   useEffect(() => {
     if (currentUser) {
-      const unSub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+      const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
         setUsers(doc.data());
       });
 
       return () => {
-        unSub();
+        unsub();
       };
     }
   }, [currentUser?.uid, currentUser]);
+
+  function compareDate(a: IUser, b: IUser) {
+    if (a[1].date === null) return -1;
+    return b[1].date?.seconds - a[1].date?.seconds;
+  }
 
   function handleSelect(userInfo: IUserInfo) {
     dispatch({ type: "CHANGE_USER", payload: userInfo });
@@ -55,7 +60,7 @@ function Users() {
     <div className="user__container">
       {users &&
         Object.entries(users)
-          ?.sort((a: IUser, b: IUser) => b[1].date.seconds - a[1].date.seconds)
+          ?.sort((a: IUser, b: IUser) => compareDate(a, b))
           .map((chat: IUser) => (
             <div
               className="user"

@@ -40,7 +40,6 @@ const User = z
   });
 
 function SignUp() {
-  const [err, setErr] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
@@ -97,9 +96,8 @@ function SignUp() {
                   break;
               }
             },
-            (error) => {
-              setErr(true);
-              console.log(error);
+            (error: Error) => {
+              alert(error.message);
             },
             () => {
               getDownloadURL(uploadTask.snapshot.ref).then(
@@ -123,8 +121,10 @@ function SignUp() {
             }
           );
         });
-    } catch (error) {
-      setErr(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
   }
 
@@ -136,8 +136,7 @@ function SignUp() {
     <div className="sign__container">
       <div className="sign">
         <h1 className="sign__title">Sign Up</h1>
-        <h3 className="sign__logo">AnySpeak</h3>
-        {err && <p>There was an error</p>}
+        <h3 className="sign__logo">Whispree</h3>
         <form className="sign__form" onSubmit={handleSubmit}>
           <div className="sign__box">
             <input

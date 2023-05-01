@@ -20,10 +20,10 @@ function Message({ message }: IObjectMessage) {
   const currentUser = UseAuth();
   const { data } = UseChat();
 
-  const messageClass = useRef<HTMLDivElement>(null!);
+  const messageBottom = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
-    messageClass.current?.scrollIntoView({ behavior: "smooth" });
+    messageBottom.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
   const messageDate = message.date.toDate().toString().substring(4, 10);
@@ -35,7 +35,6 @@ function Message({ message }: IObjectMessage) {
       className={`message${
         message.senderUid === currentUser?.uid ? " my" : ""
       }`}
-      ref={messageClass}
     >
       <div className="message__info">
         <img
@@ -56,6 +55,7 @@ function Message({ message }: IObjectMessage) {
         {message.img && (
           <img src={message.img} alt="" className="message__image image" />
         )}
+        <span ref={messageBottom} />
       </div>
     </div>
   );

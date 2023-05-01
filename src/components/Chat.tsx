@@ -3,6 +3,7 @@ import Message from "./Message";
 import { UseAuth } from "../reducers/AuthContext";
 import { UseChat } from "../reducers/ChatContext";
 import { db, storage } from "../firebase";
+import { User } from "firebase/auth";
 import {
   arrayUnion,
   doc,
@@ -27,7 +28,7 @@ interface IMessage {
 type IMessages = IMessage[];
 
 function Chat() {
-  const currentUser = UseAuth();
+  const currentUser: User | null = UseAuth();
   const { data } = UseChat();
 
   const [text, setText] = useState<string>("");
@@ -36,12 +37,12 @@ function Chat() {
   const [messages, setMessages] = useState<IMessages | []>([]);
 
   useEffect(() => {
-    const unSub = onSnapshot(doc(db, "chats", data.chatUid), (doc) => {
+    const unsub = onSnapshot(doc(db, "chats", data.chatUid), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
     });
 
     return () => {
-      unSub();
+      unsub();
     };
   }, [data.chatUid]);
 
@@ -100,7 +101,7 @@ function Chat() {
           }
         }
       );
-    } else {
+    } else if (text) {
       await updateDoc(doc(db, "chats", data.chatUid), {
         messages: arrayUnion({
           id: uuid(),
@@ -109,6 +110,8 @@ function Chat() {
           date: Timestamp.now(),
         }),
       });
+    } else {
+      return;
     }
 
     if (currentUser) {

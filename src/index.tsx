@@ -9,6 +9,7 @@ import { ChatProvider } from "./reducers/ChatContext";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <AuthProvider>
     <ChatProvider>

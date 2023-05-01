@@ -12,11 +12,11 @@ export function AuthProvider({ children }: IProviderChildren) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsub = auth.onAuthStateChanged((user: User | null) => {
       setCurrentUser(user);
     });
 
-    return unsubscribe;
+    return unsub;
   }, []);
 
   return (
