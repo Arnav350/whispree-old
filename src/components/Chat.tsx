@@ -69,36 +69,25 @@ function Chat() {
               break;
           }
         },
-        (error) => {},
-        () => {
-          if (text) {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL: string) => {
-                await updateDoc(doc(db, "chats", data.chatUid), {
-                  messages: arrayUnion({
-                    id: uuid(),
-                    text,
-                    senderUid: currentUser?.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-              }
-            );
-          } else {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL: string) => {
-                await updateDoc(doc(db, "chats", data.chatUid), {
-                  messages: arrayUnion({
-                    id: uuid(),
-                    senderUid: currentUser?.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-              }
-            );
+        (error) => {
+          if (error instanceof Error) {
+            console.log(error.message);
           }
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(
+            async (downloadURL: string) => {
+              await updateDoc(doc(db, "chats", data.chatUid), {
+                messages: arrayUnion({
+                  id: uuid(),
+                  senderUid: currentUser?.uid,
+                  date: Timestamp.now(),
+                  img: downloadURL,
+                  ...(text && { text }),
+                }),
+              });
+            }
+          );
         }
       );
     } else if (text) {
@@ -135,7 +124,7 @@ function Chat() {
 
   return (
     <div className="chat">
-      <nav className="chat__info">
+      <header className="chat__info">
         {data.user.photoURL && (
           <img
             src={data.user.photoURL}
@@ -144,7 +133,7 @@ function Chat() {
           />
         )}
         <p className="chat__username">{data.user.displayName}</p>
-      </nav>
+      </header>
       <div className="chat__messages">
         {messages.map((message: IMessage, index: number) => (
           <Message message={message} key={messages[index].id} />
